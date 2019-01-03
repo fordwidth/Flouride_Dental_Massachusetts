@@ -36,7 +36,7 @@ I assumed that fluoridated water was commonly provided in the US but was obvious
 ### Data source: 
 https://www.cdc.gov/fluoridation/statistics/fsgrowth.htm
 ```{r FluoridatedWaterStats, echo = FALSE, message = FALSE}
-PWFW <- read.csv("/home/trent/Documents/Bioinformatics/DataScience/DevelopingDataProducts/USFluoridatedWaterStats.csv")
+PWFW <- read.csv("USFluoridatedWaterStats.csv")
 FWplot <- plot(PWFW$Year,  PWFW$Percentage.of.US.population.receiving.flouridated.water, 
 main = "Percentage of US Population Receiving Fluoridated Water", xlab = "Year", ylab = "Precentage", col = "red", pch = 19, ylim = c(0, 100))
 
@@ -57,12 +57,12 @@ At the state level, income data are readily available and may provide a factor a
 ```{r StateStats, echo = FALSE, message = FALSE}
 library(plotly)
 # read in state fluoridation data
-StateFW <- read.csv("/home/trent/Documents/Bioinformatics/DataScience/DevelopingDataProducts/StateFluoridationStats.csv")
+StateFW <- read.csv("StateFluoridationStats.csv")
 
 # read in state income stats...
 # unfortunately the data are hard to extract in an automated manner and were copied/pasted to a file.  
 # From 'Medain Household Income' --2014 --Est
-StateInc <- read.csv("/home/trent/Documents/Bioinformatics/DataScience/DevelopingDataProducts/MedianHouseholdIncome2014.csv", stringsAsFactors = FALSE)
+StateInc <- read.csv("MedianHouseholdIncome2014.csv", stringsAsFactors = FALSE)
 StateInc$MedianIncome <- as.numeric(gsub(",", "", StateInc$MedianIncome))
 plot_ly(y = ~StateFW$Percentage, x = ~StateInc$MedianIncome, 
         type = "scatter",
@@ -85,7 +85,7 @@ Data from https://nccd.cdc.gov/DOH_MWF/Default/WaterSystemList.aspx shows how ma
 # is faulty and can not be opened. Had to copy and past by hand for each county.  
 # https://nccd.cdc.gov/DOH_MWF/Default/CountyList.aspx
 library(plyr)
-MFW <- read.csv("/home/trent/Documents/Bioinformatics/DataScience/DevelopingDataProducts/MassachusettsFlourideStats.csv")
+MFW <- read.csv("MassachusettsFlourideStats.csv")
 MassCounties <- as.character(unique(MFW$County))
 CountyFW <- as.data.frame(count(MFW[MFW$County == MassCounties[[1]],]$Fluoridated))
 CountyFW$County <- c(MassCounties[[1]], MassCounties[[1]])
@@ -132,7 +132,7 @@ Some Massachusetts counties report variable levels of water districts with fluor
 ```{r, echo = FALSE, message = FALSE}
 library(leaflet)
 # obtained data longitude/latitude data from google maps and population from wikipedia
-MassCoData <- read.csv("/home/trent/Documents/Bioinformatics/DataScience/DevelopingDataProducts/MassCountyData.csv", comment.char = "#") 
+MassCoData <- read.csv("MassCountyData.csv", comment.char = "#") 
 # assuming coordinates are for center of county 
 MassCoData$Latitude <- as.numeric(MassCoData$Latitude)
 MassCoData$Longitude <- as.numeric(MassCoData$Longitude)
@@ -164,7 +164,7 @@ Looking at communal oral health is a complex affair involving many factors. Diff
 ```{r FluoridatedWaterStats, echo = FALSE, message = FALSE}
 # CONSIDER REMOVING BOTH DUKES AND NANTUCKET DUE TO LOW POPULATION
 
-PWFW <- read.csv("/home/trent/Documents/BiologyVentures/Dental/Dental_Code_Test.csv", na.strings = "*")
+PWFW <- read.csv("Dental_Code_Test.csv", na.strings = "*")
 # get rid of x in name...
 names(PWFW) <- c("County", "Town", "Description", "2010", "2011", "2013", "2012", "2014", "2015", "Age")
 # prep for later matching with population..
@@ -198,7 +198,7 @@ PWFW[c(18693:19876),8] <- "periodontics"
 # obtained data longitude/latitude data from google maps and population from wikipedia
 
 # https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=CF
-CountyPop <- read.csv("/home/trent/Documents/BiologyVentures/USCities/MassCoPop.csv");
+CountyPop <- read.csv("MassCoPop.csv");
 names(CountyPop) <- c("Geography", "2010", "2011", "2012", "2013", "2014", "2015")
 # However, let's stick wtih the actual census data from 2010. 
 pop2010 <- CountyPop[, c(1:2)]; pop2010$Geography <- as.character(pop2010$Geography)
